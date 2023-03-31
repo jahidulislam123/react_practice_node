@@ -17,6 +17,7 @@ async function run(){
     try{
       await client.connect();
       console.log('database connected finally hayre hay ');
+
       const getCollection = client.db('practice').collection('get');
 
 
@@ -32,6 +33,26 @@ async function run(){
         const take =req.body;
         const result = await getCollection.insertOne(take);
         res.send(result);
+
+      })
+
+      app.put('/helloData/:id',(req,res)=>{
+        const id = req.params.id; // Get the user ID from the URL params
+        console.log(id);
+        const { name } = req.body;
+        console.log(name)
+        
+
+        getCollection.updateOne({age:id},{$set:{name}})
+        .then((result)=>{
+          res.send(result);
+          // res.send("User updated successfully ");
+        })
+        .catch((error)=>{
+          console.log(error);
+          res.status(500).send('An occur has while updating ')
+        })
+
 
       })
 
